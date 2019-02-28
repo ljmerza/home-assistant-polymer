@@ -15,6 +15,7 @@ import { CardPickTarget } from "../types";
 
 const cards = [
   { name: "Alarm panel", type: "alarm-panel" },
+  { name: "Calendar", type: "calendar" },
   { name: "Conditional", type: "conditional" },
   { name: "Entities", type: "entities" },
   { name: "Entity Button", type: "entity-button" },

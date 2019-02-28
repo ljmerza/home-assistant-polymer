@@ -4,6 +4,7 @@ import { fireEvent } from "../../../common/dom/fire_event";
 
 import "../cards/hui-alarm-panel-card";
 import "../cards/hui-conditional-card";
+import "../cards/hui-calendar-card";
 import "../cards/hui-entities-card";
 import "../cards/hui-entity-button-card";
 import "../cards/hui-entity-filter-card";
@@ -36,6 +37,7 @@ import { LovelaceCardConfig } from "../../../data/lovelace";
 
 const CARD_TYPES = new Set([
   "alarm-panel",
+  "calendar",
   "conditional",
   "entities",
   "entity-button",
