@@ -37,15 +37,9 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
 
   @property() public hass?: HomeAssistant;
   @property() private _config?: Config;
-  private _events?: any = [];
+  @property() private _loading?: boolean = true;
 
-  static get properties(): PropertyDeclarations {
-    return {
-      hass: {},
-      _events: [],
-      _config: {},
-    };
-  }
+  private _events?: any = []; // save events gotten asyncronously
 
   public getCardSize(): number {
     return 8;
@@ -68,34 +62,36 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
 
   private firstUpdated(changedProps) {
     super.firstUpdated(changedProps);
+
+    // on first render need to fetch calendar events
     this.getEvents();
   }
 
   private render(): TemplateResult | void {
     if (!this._config || !this.hass) return;
 
-    const groupedEventsByDay = this.groupEventsByDay();
-
     return html`
       <ha-card class="calendar-card">
         ${this.createHeader()}
         <table>
           <tbody>
-            ${this.createCardBody(groupedEventsByDay)}
+            ${this.createCardBody()}
           </tbody>
         </table>
       </ha-card>
     `;
   }
 
-  private createCardBody(groupedEventsByDay) {
-    if (groupedEventsByDay.length == 0) {
+  private createCardBody() {
+    if (this._loading) {
       return html`
         <div class="loading-container">
           <paper-spinner active></paper-spinner>
         </div>
       `;
     }
+
+    const groupedEventsByDay = this.groupEventsByDay();
 
     return groupedEventsByDay.reduce((htmlTemplate, eventDay) => {
       const momentDay = moment(eventDay.day);
@@ -124,7 +120,7 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
         `
       );
 
-      // add current day to overall template
+      // add current day container to overall template
       return html`
         ${htmlTemplate} ${eventsTemplate}
       `;
@@ -144,6 +140,8 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
         console.log(err);
       }
     }
+
+    this._loading = false;
   }
 
   /**
@@ -273,7 +271,6 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
 
       .day-wrapper td {
         padding-top: 10px;
-        cursor: pointer;
       }
 
       .day-wrapper.day-wrapper-last > td {
@@ -286,7 +283,6 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
       }
       .day-wrapper .overview {
         padding-left: 10px;
-        cursor: pointer;
       }
 
       .day-wrapper .overview .title {
