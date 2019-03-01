@@ -54,7 +54,7 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
       title: "Calendar",
       hideTitle: false,
       numberOfDays: 7,
-      timeFormat: "HH:mm",
+      timeFormat: "h:mma",
       progressBar: false,
       ...config,
     };
@@ -108,7 +108,7 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
               <div>${index === 0 ? momentDay.format("DD") : ""}</div>
               <div>${index === 0 ? momentDay.format("ddd") : ""}</div>
             </td>
-            <td class="overview">
+            <td class="overview" @click=${() => this.openCalendar(event)}>
               <div class="title">${event.message}</div>
               <div class="time">${this.getTimeHtml(event)}</div>
               ${this._config.progressBar ? this.buildProgressBar(event) : ""}
@@ -231,6 +231,10 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
       ></ha-icon>
       <hr class="progress-bar" />
     `;
+  }
+
+  openCalendar(event) {
+    if (event.link) window.open(event.link);
   }
 
   static get styles(): CSSResult {
