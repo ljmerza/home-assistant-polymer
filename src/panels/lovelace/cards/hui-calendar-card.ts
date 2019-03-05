@@ -135,9 +135,10 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
           entity_id: entityId,
         });
 
-        this._events = this._events.concat(events);
+        console.log({ events });
+        this._events = this._events.concat(events || []);
       } catch (err) {
-        console.log(err);
+        console.log({ err });
       }
     }
 
