@@ -171,8 +171,12 @@ export class HuiCalendarCard extends LitElement implements LovelaceCard {
         All day
       `;
 
-    const start = moment(event.start).format(this._config.timeFormat);
-    const end = moment(event.end).format(this._config.timeFormat);
+    const start = event.start
+      ? moment(event.start).format(this._config.timeFormat)
+      : "";
+    const end = event.end
+      ? moment(event.end).format(this._config.timeFormat)
+      : "";
     return html`
       ${start} - ${end}
     `;
